@@ -1,10 +1,13 @@
-//-------------------------------User Commands-----------------------------------
+//--------------------------------User Commands-----------------------------------
 var userCommand = process.argv[2];
+var spotifySong = process.argv[3];
 
-//-------------------------------Requires----------------------------------------
+
+//--------------------------------Requires----------------------------------------
 require("dotenv").config();
-var keys = require("./keys.js"); //access keys from keys.js file 
+var keys = require("./keys.js"); 
 var Twitter = require('twitter'); 
+var Spotify = require('node-spotify-api');
 //--------------------------------Twitter Setup ----------------------------------
 var twitterKeys = keys.twitter;
 var client = new Twitter(
@@ -23,6 +26,7 @@ function runTwitter () {
         for (var i = 0; i<tweets.length; i++){
             console.log("Tweet Body: " + tweets[i].text);
             console.log("Date and Time of Tweet: " + tweets[i].created_at);
+            console.log("---------------------------------");
             }
         }
         else {
@@ -32,26 +36,55 @@ function runTwitter () {
 }
 
 //---------------------------------Spotify Setup ----------------------------------
-//----------------------------Spotify API Call Function----------------------------
+var spotifyKeys = keys.spotify;
 
+var spotify = new Spotify(
+    spotifyKeys
+);
+
+//----------------------------Spotify API Call Function----------------------------
+function runSpotify(){
+    spotify.search({ type: 'track', query: spotifySong }, function(err, data) {
+        if (!err){
+            var songData=data.tracks.items;
+            for (var i=0; i<10; i++){
+                if (songData[i] != undefined){
+                    console.log("Artist: " + songData[i].artists[0].name);
+                    console.log("Song: " + songData[i].name);
+                    console.log("Album: " + songData[i].album.name);
+                    console.log("URL: " + songData[i].preview_url);
+                    console.log("---------------------------------");
+                }
+            }
+        }
+        else {
+        return console.log('Error occurred: ' + err);
+        }
+    });
+}
 //------------------------------------OMDB Setup ----------------------------------
 //------------------------------OMDB API Call Function-----------------------------
 
 
 //------------------------Call functions based on User Command---------------------
-
-if (userCommand === 'my-tweets'){
+switch (userCommand) {
+    case 'my-tweets':
     runTwitter();
-}
-else if (userCommand === `spotify-this-song`){
-    console.log("NOT created yet");
-}
-else if (userCommand === `movie-this`){
-    console.log("NOT created yet");
-}
-else if (userCommand === `do-what-it-says`){
-    console.log("NOT created yet");
-}
-else {
-    console.log("NOT A VALID COMMAND");
+    break;
+
+      case `spotify-this-song`:
+      runSpotify();
+      break;
+
+      case `movie-this`:
+      console.log("NOT created yet");
+      break;
+    
+      case `do-what-it-says`:
+      console.log("NOT created yet");
+      break;
+    
+      case 'dinosaur':
+      default:
+      console.log("NOT A VALID COMMAND");
 }
