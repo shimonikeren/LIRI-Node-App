@@ -26,6 +26,7 @@ var keys = require("./keys.js");
 var Twitter = require('twitter'); 
 var Spotify = require('node-spotify-api');
 var request = require("request");
+//var fs = require("fs");
 
 //----------------------Call functions based on User Command----------------------
 switch (userCommand) {
@@ -42,7 +43,7 @@ switch (userCommand) {
     break;
 
     case `do-what-it-says`:
-    console.log("NOT created yet");
+    console.log("NOT created yet....");
     break;
 
     case 'dinosaur':
@@ -132,5 +133,15 @@ function runOMDB(){
 }
 
 //------------------------------Do What It Says Function---------------------------
-
+// function doWhatItSays(){
+// fs.readFile("random.txt", "utf8", function(error, data) {
+//     if (error) {
+//       return console.log(error);
+//     }
+//     console.log(data);
+//     // var dataArr = data.split(" ");
+//     // console.log(dataArr);
+  
+//   });
+// }
 
