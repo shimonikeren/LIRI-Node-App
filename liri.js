@@ -11,19 +11,25 @@ var client = new Twitter({
   console.log(twitterKeys);
 
 var params = {
-screen_name: 'KerenShim',
-count: 1
+    // q: '#nodejs, #Nodejs',
+    screen_name: 'KerenShim',
+    count: 20,
     };
+
 
 function runTwitter () {
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) {
-          console.log(tweets);
+        for (var i = 0; i<tweets.length; i++){
+            console.log(tweets[i]);
+            console.log(tweets[i].text);
+            console.log(tweets[i].created_at);
+            }
         }
         else {
-            console.log("ERROR");
+          console.log("ERROR!!");
         }
       });
-    }
-    
+}
+
 runTwitter();
