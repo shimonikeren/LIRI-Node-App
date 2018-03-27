@@ -1,12 +1,12 @@
 require("dotenv").config();
 
-var keys = require("./keys.js");
+var keys = require("./keys.js"); //access keys from keys.js file 
 
-//-----------------------------------TWITTER-----------------------------------
-var Twitter = require('twitter');
+//--------------------------------Twitter Setup ----------------------------------
+var Twitter = require('twitter'); 
 var twitterKeys = keys.twitter;
 var client = new Twitter({
-    twitterKeys,
+    twitterKeys
   });
   console.log(twitterKeys);
 
@@ -16,6 +16,7 @@ var params = {
     count: 20,
     };
 
+//----------------------------Twitter API Call Function----------------------------
 
 function runTwitter () {
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
@@ -31,5 +32,5 @@ function runTwitter () {
         }
       });
 }
-
+//-----------------------------------Call Twitter Function -------------------------
 runTwitter();
