@@ -1,2 +1,2 @@
 # LIRI-Node-App-
-Language
+Language Interpretation and Recognition Interface
