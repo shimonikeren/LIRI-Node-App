@@ -10,7 +10,7 @@ var client = new Twitter({
   });
 
 var params = {
-    // q: '#nodejs, #Nodejs',
+    // q: '#nodejs, #Nodejs',  //not sure whether this is necessary 
     screen_name: 'KerenShim',
     count: 20,
     };
@@ -27,7 +27,7 @@ function runTwitter () {
             }
         }
         else {
-          console.log("ERROR!!");
+          console.log("ERROR!!" + error);
         }
       });
 }
