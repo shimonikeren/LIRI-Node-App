@@ -8,7 +8,6 @@ var twitterKeys = keys.twitter;
 var client = new Twitter({
     twitterKeys
   });
-  console.log(twitterKeys);
 
 var params = {
     // q: '#nodejs, #Nodejs',
