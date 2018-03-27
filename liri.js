@@ -1,14 +1,47 @@
 //--------------------------------User Commands-----------------------------------
 var userCommand = process.argv[2];
-var spotifySong = process.argv[3];
-
-
+var nodeArgs = process.argv;
+var spotifySong = "";
+    for (var i = 3; i < nodeArgs.length; i++) {
+    if (i > 3 && i < nodeArgs.length) {
+        spotifySong = spotifySong + " " + nodeArgs[i];
+    }
+    else {
+        spotifySong += nodeArgs[i];
+    }
+    }
 //--------------------------------Requires----------------------------------------
 require("dotenv").config();
 var keys = require("./keys.js"); 
 var Twitter = require('twitter'); 
 var Spotify = require('node-spotify-api');
-//--------------------------------Twitter Setup ----------------------------------
+
+//------------------------Call functions based on User Command---------------------
+switch (userCommand) {
+    case 'my-tweets':
+    runTwitter();
+    break;
+
+    case `spotify-this-song`:
+    runSpotify();
+    break;
+
+    case `movie-this`:
+    console.log("NOT created yet");
+    break;
+
+    case `do-what-it-says`:
+    console.log("NOT created yet");
+    break;
+
+    case 'dinosaur':
+    default:
+    console.log("--------------------------------------------------------");
+    console.log("NOT A VALID COMMAND. Please use of the following Commands: \n my-tweets, \n spotify-this-song <song name>, \n movie-this, \n do-what-it-says");
+    console.log("--------------------------------------------------------");
+}
+
+//----------------------------------Twitter API -----------------------------------
 var twitterKeys = keys.twitter;
 var client = new Twitter(
     twitterKeys
@@ -19,7 +52,6 @@ var params = {
     count: 20,
     };
 
-//----------------------------Twitter API Call Function----------------------------
 function runTwitter () {
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) {
@@ -35,15 +67,17 @@ function runTwitter () {
       });
 }
 
-//---------------------------------Spotify Setup ----------------------------------
+//-----------------------------------Spotify API -----------------------------------
 var spotifyKeys = keys.spotify;
 
 var spotify = new Spotify(
     spotifyKeys
 );
 
-//----------------------------Spotify API Call Function----------------------------
 function runSpotify(){
+    if (!spotifySong){
+        spotifySong="I saw the sign";
+    }
     spotify.search({ type: 'track', query: spotifySong }, function(err, data) {
         if (!err){
             var songData=data.tracks.items;
@@ -66,25 +100,3 @@ function runSpotify(){
 //------------------------------OMDB API Call Function-----------------------------
 
 
-//------------------------Call functions based on User Command---------------------
-switch (userCommand) {
-    case 'my-tweets':
-    runTwitter();
-    break;
-
-      case `spotify-this-song`:
-      runSpotify();
-      break;
-
-      case `movie-this`:
-      console.log("NOT created yet");
-      break;
-    
-      case `do-what-it-says`:
-      console.log("NOT created yet");
-      break;
-    
-      case 'dinosaur':
-      default:
-      console.log("NOT A VALID COMMAND");
-}
