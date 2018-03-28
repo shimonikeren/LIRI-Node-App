@@ -1,15 +1,16 @@
 # LIRI-Node-App-
 Language Interpretation and Recognition Interface
 
+##Dependencies: 
 ### Please Install the following node packages to run this app 
-*Request 
-*Spotify
-*Twitter
-*DotEnv
+**request 
+**node-spotify-api
+**twitter
+**dotenv
 
 
 ### Use the following commands to run this app 
-*spotify-this followed by song name [to search for information about a song]
-*my-tweets [to get latest tweets]
-*movie-this followed by movie name [to get information about a movie]
-*do-what-it-says [to get a random chunk of information]
+**node liri.js spotify-this followed by song name [to search for information about a song]
+**node liri.js my-tweets [to get latest tweets]
+**node liri.js movie-this followed by movie name [to get information about a movie]
+**node liri.js do-what-it-says [to get a random chunk of information from a txt file]

@@ -1,4 +1,4 @@
-//-----------------------------------User Commands--------------------------------
+//--------------------------------User Command Variables---------------------------
 var userCommand = process.argv[2];
 var nodeArgs = process.argv;
 var spotifySong = "";
@@ -20,21 +20,33 @@ for (var i = 3; i < nodeArgs.length; i++) {
     movieName += nodeArgs[i];
     }
 }
-//------------------------------------Requires------------------------------------
+//------------------------------------NPM Requires----------------------------------
 require("dotenv").config();
 var keys = require("./keys.js"); 
 var Twitter = require('twitter'); 
 var Spotify = require('node-spotify-api');
 var request = require("request");
-//var fs = require("fs");
+var fs = require("fs");
 
-//----------------------Call functions based on User Command----------------------
+//------------------------Call functions based on User Command----------------------
 switch (userCommand) {
     case 'my-tweets':
+    var twitterKeys = keys.twitter; //these vars are only needed here
+    var client = new Twitter(
+        twitterKeys
+    );
+    var params = {
+        screen_name: 'KerenShim',
+        count: 20,
+    };
     runTwitter();
     break;
 
     case `spotify-this-song`:
+        var spotifyKeys = keys.spotify; //these vars are only needed here 
+        var spotify = new Spotify(
+            spotifyKeys
+        );
     runSpotify();
     break;
 
@@ -43,7 +55,7 @@ switch (userCommand) {
     break;
 
     case `do-what-it-says`:
-    console.log("NOT created yet....");
+    doWhatItSays();
     break;
 
     case 'dinosaur':
@@ -53,18 +65,8 @@ switch (userCommand) {
     console.log("--------------------------------------------------------");
 }
 
-//----------------------------------Twitter API ----------------------------------
-var twitterKeys = keys.twitter;
-var client = new Twitter(
-    twitterKeys
-  );
-
-var params = {
-    screen_name: 'KerenShim',
-    count: 20,
-    };
-
-function runTwitter () {
+//-------------------------------------Functions ------------------------------------
+function runTwitter() {
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) {
         for (var i = 0; i<tweets.length; i++){
@@ -78,13 +80,6 @@ function runTwitter () {
         }
       });
 }
-
-//-----------------------------------Spotify API ----------------------------------
-var spotifyKeys = keys.spotify;
-
-var spotify = new Spotify(
-    spotifyKeys
-);
 
 function runSpotify(){
     if (!spotifySong){
@@ -108,7 +103,7 @@ function runSpotify(){
         }
     });
 }
-//------------------------------------OMDB API ------------------------------------
+
 function runOMDB(){
     if (!movieName){
         movieName="Mr. Nobody";
@@ -132,16 +127,16 @@ function runOMDB(){
     });
 }
 
-//------------------------------Do What It Says Function---------------------------
-// function doWhatItSays(){
-// fs.readFile("random.txt", "utf8", function(error, data) {
-//     if (error) {
-//       return console.log(error);
-//     }
-//     console.log(data);
-//     // var dataArr = data.split(" ");
-//     // console.log(dataArr);
-  
-//   });
-// }
+function doWhatItSays(){
+fs.readFile("random.txt", "utf8", function(error, data) {
+    if (error) {
+      return console.log(error);
+    }
+    console.log(data);
+    var dataArr = data.split(",");
+    console.log(dataArr[0]);
+    console.log(dataArr[1]);
+    runSpotify(dataArr[0], dataArr[1]);
+  });
+}
 
